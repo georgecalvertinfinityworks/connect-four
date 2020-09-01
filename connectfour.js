@@ -24,7 +24,11 @@ function draw_grid(numberOfRows, numberOfColumns) {
     }
 }
 
-function placeCounter(board, column, player) {
+let gameWon = false
+function placeCounter(board, column, player, gameWon) {
+    if (gameWon){
+        return null
+    }
     $("#winner-display").css("display", "none")
     for (let i = board.length - 1; i >= 0; i--) {
         if (board[i][column] === null) {
@@ -39,13 +43,12 @@ function placeCounter(board, column, player) {
             }
         } else {
             continue
-
-            // return board (Connor: instead of returning player colours return boolean for successful placement then change board/player in loop below)
         }
     }
 }
 
 function resetGame(board) {
+    gameWon = false
     for (i = 0; i < board.length; i++) {
         for (j = 0; j < board[i].length; j++) {
             board[i][j] = null
@@ -77,16 +80,13 @@ let numberOfTurns = 0
 
 
 
+// click buttons
+
 for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[0].length; j++) {
-        $("#row-" + i + "-column-" + j).click(() => player = placeCounter(board, j, player))
+        $("#row-" + i + "-column-" + j).click(() => player = placeCounter(board, j, player, gameWon))
     }
 }
-
-
-
-//const resetGameButton= document.getElementById("reset-button")
-// resetGameButton.addEventListener("click", function () {resetGame(board)})
 
 $("#reset-button").click(() => resetGame(board))
 
@@ -151,16 +151,19 @@ function checkWinner(i, j, board) {
 
 
 function updateDisplay(winner) {
-    const winnerName = document.getElementById("winner-name");
-    winnerName.innerText = winner;
-    const winnerDisplay = document.getElementById("winner-display");
-    winnerDisplay.style.display = "block";
-    resetGame(board)
+    if (winner === "red"){
+        player1wins += 1
+    }
+    if (winner === "yellow"){
+        player2wins += 1
+    }
+    $("#winner-name").text(winner)
+    $("#winner-display").css("display", "block")
+    gameWon = true
+    return gameWon
+    
 
 }
-// check winner
-
-// what are we iterating over and when 
 
 // input for board sizes - fix
 
