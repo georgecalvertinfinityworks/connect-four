@@ -49,9 +49,7 @@ function resetGame(board) {
     for (i = 0; i < board.length; i++) {
         for (j = 0; j < board[i].length; j++) {
             board[i][j] = null
-            const currentCircle = document.getElementById("circle-row-" + i + "-column-" + j)
-            currentCircle.style.backgroundColor = "white"
-
+            $("#circle-row-" + i + "-column-" + j).css("background-color", "white")
         }
     }
     console.log("reset game was clicked")
@@ -78,16 +76,6 @@ let player = "red"
 let numberOfTurns = 0
 
 
-//listen for click on column
-/* for (let i=0; i<board.length; i++) {
-    for (let j=0; j<board[0].length; j++) {
-        const column = document.getElementById("row-"+i+"-column-"+j)
-        column.addEventListener("click", function () {
-            console.log("clicked row "+i+" column "+j)
-            player = placeCounter(board, j, player)
-        }, true)
-    }
-} */
 
 for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[0].length; j++) {
