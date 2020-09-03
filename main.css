@@ -54,6 +54,7 @@ body {
 
 .input {
     width: 2rem;
+    justify-content: center;
 }
 
 #inputs {
