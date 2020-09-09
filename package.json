@@ -1,10 +1,9 @@
 {
   "name": "connect-four",
   "version": "1.0.0",
-  "description": "",
   "main": "connectfour.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,5 +19,16 @@
     "eslint": "^7.8.1",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0"
-  }
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "jest": "^26.4.2",
+    "jquery": "^3.5.1"
+  },
+  "jest": {
+    "setupFiles": [
+      "./source/setup-jest.js"
+    ]
+  },
+  "description": ""
 }
