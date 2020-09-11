@@ -12,7 +12,20 @@ const board = [];
 $('#winner-count1').text(player1wins);
 $('#winner-count2').text(player2wins);
 
-function draw_grid(numberOfRows, numberOfColumns) {
+function createBoard(numberOfRows, numberOfColumns, board) {
+  const rows = [];
+  for (i = 0; i < numberOfColumns; i++) {
+    rows.push(null);
+  }
+  for (i = 0; i < numberOfRows; i++) {
+    const newRow = rows.slice();
+    board.push(newRow);
+  }
+  render(board);
+  return board;
+}
+
+/* function draw_grid(numberOfRows, numberOfColumns) {
   $('#grid').empty();
   // const grid = document.getElementById('grid');
   const grid = $('#grid');
@@ -42,23 +55,37 @@ function draw_grid(numberOfRows, numberOfColumns) {
       $(column).click(() => player = placeCounter(board, j, player, gameWon));
     }
   }
-}
+} */
 
-function createBoard(numberOfRows, numberOfColumns, board) {
-  const rows = [];
-  for (i = 0; i < numberOfColumns; i++) {
-    rows.push(null);
+function render(board) {
+  $('#grid').empty();
+  for (let i = 0; i < board.length; i++) {
+    const row = $('<div />')
+      .addClass('row')
+      .attr('id', `row-${i}`);
+      // place row in grid
+    $(grid).append(row);
+    for (let j = 0; j < board[0].length; j++) {
+      const column = $('<div />')
+        .addClass('column')
+        .attr('id', `row-${i}-column-${j}`);
+      const circle = $('<div />')
+        .addClass('circle')
+        .attr('id', `circle-row-${i}-column-${j}`);
+      $(column).append(circle);
+      // place column in row
+      $(row).append(column);
+      if (board[i][j] !== null) {
+        console.log(board[i][j]);
+        $(`#circle-row-${i}-column-${j}`).css('background-color', board[i][j]);
+      }
+      $(column).click(() => player = placeCounter(board, j, player, gameWon));
+    }
   }
-  for (i = 0; i < numberOfRows; i++) {
-    const newRow = rows.slice();
-    board.push(newRow);
-  }
-  return board;
+  console.log('render complete');
 }
 
 function placeCounter(board, column, player, gameWon) {
-  console.log(board);
-  console.log('placed counter');
   if (gameWon) {
     return null;
   }
@@ -66,7 +93,7 @@ function placeCounter(board, column, player, gameWon) {
   for (let i = board.length - 1; i >= 0; i--) {
     if (board[i][column] === null) {
       board[i][column] = player;
-      $(`#circle-row-${i}-column-${column}`).css('background-color', player);
+      render(board);
       numberOfTurns += 1;
       checkWinner(i, column, board);
       if (numberOfTurns % 2 === 1) {
@@ -83,12 +110,13 @@ function resetGame(board) {
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       board[i][j] = null;
-      $(`#circle-row-${i}-column-${j}`).css('background-color', 'white');
     }
   }
+  render(board);
   console.log('reset game was clicked');
   return board;
 }
+
 function updateDisplay(winner) {
   if (winner === 'red') {
     player1wins += 1;
@@ -100,8 +128,6 @@ function updateDisplay(winner) {
   $('#winner-display').css('display', 'block');
   $('#winner-count1').text(player1wins);
   $('#winner-count2').text(player2wins);
-  gameWon = true;
-  return gameWon;
 }
 
 function checkWinnerHorizontal(row, column, board) {
@@ -128,11 +154,9 @@ function checkWinnerVertical(rowIndex, columnIndex, board) {
 function checkWinnerPositiveDiagonal(rowIndex, columnIndex, board) {
   const topRightIndex = [rowIndex, columnIndex];
   const bottomLeftIndex = [rowIndex, columnIndex];
-  console.log(topRightIndex);
   while (topRightIndex[0] !== 0 && topRightIndex[1] !== board.length[0] - 1) {
     topRightIndex[0] -= 1;
     topRightIndex[1] += 1;
-    console.log(topRightIndex);
   }
   while (bottomLeftIndex[0] !== board.length - 1 && bottomLeftIndex[1] !== 0) {
     bottomLeftIndex[0] += 1;
@@ -155,18 +179,16 @@ function checkWinnerPositiveDiagonal(rowIndex, columnIndex, board) {
 function checkWinnerNegativeDiagonal(rowIndex, columnIndex, board) {
   const topLeftIndex = [rowIndex, columnIndex];
   const bottomRightIndex = [rowIndex, columnIndex];
- // console.log(topRightIndex);
+  // console.log(topRightIndex);
   while (topLeftIndex[0] !== 0 && topLeftIndex[1] !== 0) {
     topLeftIndex[0] -= 1;
     topLeftIndex[1] -= 1;
-    console.log(topLeftIndex);
   }
-  while (bottomRightIndex[0] !== board.length - 1 && bottomRightIndex[1] !== board.length -1) {
+  while (bottomRightIndex[0] !== board.length - 1 && bottomRightIndex[1] !== board.length - 1) {
     bottomRightIndex[0] += 1;
     bottomRightIndex[1] += 1;
   }
   distance = bottomRightIndex[1] - topLeftIndex[1];
-  // console.log(distance)
   let checkDiagonal = [];
   for (let i = 0; i <= distance; i++) {
     checkDiagonal.push(board[bottomRightIndex[0] - i][bottomRightIndex[1] - i]);
@@ -185,86 +207,62 @@ function checkWinner(i, j, board) {
   let winner = checkWinnerHorizontal(i, j, board);
   if (winner === 'red') {
     updateDisplay('red');
-  } else if (winner === 'yellow') {
+    gameWon = true;
+    return gameWon;
+  } if (winner === 'yellow') {
     updateDisplay('yellow');
+    gameWon = true;
+    return gameWon;
   }
   winner = checkWinnerVertical(i, j, board);
   if (winner === 'red') {
     updateDisplay('red');
-  } else if (winner === 'yellow') {
+    gameWon = true;
+    return gameWon;
+  } if (winner === 'yellow') {
     updateDisplay('yellow');
+    gameWon = true;
+    return gameWon;
   }
 
   winner = checkWinnerPositiveDiagonal(i, j, board);
   if (winner === 'red') {
     updateDisplay('red');
-  } else if (winner === 'yellow') {
+    gameWon = true;
+    return gameWon;
+  } if (winner === 'yellow') {
     updateDisplay('yellow');
+    gameWon = true;
+    return gameWon;
   }
   winner = checkWinnerNegativeDiagonal(i, j, board);
   if (winner === 'red') {
     updateDisplay('red');
-  } else if (winner === 'yellow') {
+    gameWon = true;
+    return gameWon;
+  } if (winner === 'yellow') {
     updateDisplay('yellow');
+    gameWon = true;
+    return gameWon;
   }
-  /* // check diagonal up
- if (i - 3 >= 0) {
-    // left
-    if (j - 3 >= 0) {
-      if (board[i][j] === board[i - 1][j - 1] && board[i - 1][j - 1] === board[i - 2][j - 2]
-          && board[i - 2][j - 2] === board[i - 3][j - 3] && board[i][j] !== null) {
-        updateDisplay(board[i][j]);
-      }
-    }
-    // right
-    if (j + 3 < board[i].length) {
-      if (board[i][j] === board[i - 1][j + 1] && board[i - 1][j + 1] === board[i - 2][j + 2]
-          && board[i - 2][j + 2] === board[i - 3][j + 3] && board[i][j] !== null) {
-        updateDisplay(board[i][j]);
-      }
-    }
-  }
-  // down
-  if (i + 3 < board.length) {
-    // left
-    if (j - 3 >= 0) {
-      if (board[i][j] === board[i + 1][j - 1] && board[i + 1][j - 1] === board[i + 2][j - 2]
-          && board[i + 2][j - 2] === board[i + 3][j - 3] && board[i][j] !== null) {
-        updateDisplay(board[i][j]);
-      }
-    }
-    // right
-    if (j + 3 < board[i].length) {
-      if (board[i][j] === board[i + 1][j + 1] && board[i + 1][j + 1] === board[i + 2][j + 2]
-          && board[i + 2][j + 2] === board[i + 3][j + 3] && board[i][j] !== null) {
-        updateDisplay(board[i][j]);
-      }
-    }
-  } */
 }
 
-// draw_grid(6, 7);
-
-// click buttons
-
 $('#create-board').click(() => createBoard($('#number-rows').val(), $('#number-columns').val(), board));
-$('#create-board').click(() => draw_grid($('#number-rows').val(), $('#number-columns').val()));
+// $('#create-board').click(() => draw_grid($('#number-rows').val(), $('#number-columns').val()));
 
 $('#reset-button').click(() => resetGame(board));
 
-// input for board sizes - fix
-
-// display winner
-
-// ask about nested loop when listening for click.
-
 if (typeof module !== 'undefined') {
   module.exports = {
-    draw_grid,
     createBoard,
-    checkWinner,
+    render,
     placeCounter,
     resetGame,
     updateDisplay,
+    checkWinnerHorizontal,
+    checkWinnerVertical,
+    checkWinnerNegativeDiagonal,
+    checkWinnerPositiveDiagonal,
+    checkWinner,
   };
 }
