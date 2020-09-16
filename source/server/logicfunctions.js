@@ -10,8 +10,6 @@ function createBoard(numberOfRows, numberOfColumns, gameState) {
     const newRow = rows.slice();
     gameState.board.push(newRow);
   }
-  // render(board);
-  // console.log(gameState.playernames);
   return gameState;
 }
 
@@ -109,52 +107,20 @@ function checkWinnerNegativeDiagonal(rowIndex, columnIndex, board) {
   return arrayIncludesWin(checkDiagonal);
 }
 
-function checkWinner(i, j, gameState) {
-  // row to left
-  let winner = checkWinnerHorizontal(i, j, gameState.board);
-  if (winner === 'red') {
-    gameState.gameWon = true;
-    gameState.winner = 'red';
-    gameState.player1wins += 1;
-    return gameState;
-  } if (winner === 'yellow') {
-    gameState.gameWon = true;
-    gameState.winner = 'yellow';
-    gameState.player2wins += 1;
-    return gameState;
-  }
-  winner = checkWinnerVertical(i, j, gameState.board);
-  if (winner === 'red') {
-    gameState.gameWon = true;
-    gameState.winner = 'red';
-    gameState.player1wins += 1;
-    return gameState;
-  } if (winner === 'yellow') {
-    gameState.gameWon = true;
-    gameState.winner = 'yellow';
-    gameState.player2wins += 1;
-    return gameState;
-  }
 
-  winner = checkWinnerPositiveDiagonal(i, j, gameState.board);
-  if (winner === 'red') {
+function checkWinner(i, j, gameState) {
+  const winners = [];
+  winners.push(checkWinnerHorizontal(i, j, gameState.board));
+  winners.push(checkWinnerVertical(i, j, gameState.board));
+  winners.push(checkWinnerNegativeDiagonal(i, j, gameState.board));
+  winners.push(checkWinnerPositiveDiagonal(i, j, gameState.board));
+  if (winners.includes('red')) {
     gameState.gameWon = true;
     gameState.winner = 'red';
     gameState.player1wins += 1;
-    return gameState;
-  } if (winner === 'yellow') {
-    gameState.gameWon = true;
-    gameState.winner = 'yellow';
-    gameState.player2wins += 1;
     return gameState;
   }
-  winner = checkWinnerNegativeDiagonal(i, j, gameState.board);
-  if (winner === 'red') {
-    gameState.gameWon = true;
-    gameState.winner = 'red';
-    gameState.player1wins += 1;
-    return gameState;
-  } if (winner === 'yellow') {
+  if (winners.includes('yellow')) {
     gameState.gameWon = true;
     gameState.winner = 'yellow';
     gameState.player2wins += 1;
@@ -171,6 +137,7 @@ if (typeof module !== 'undefined') {
     createBoard,
     placeCounter,
     resetGame,
+    arrayIncludesWin,
     checkWinnerHorizontal,
     checkWinnerVertical,
     checkWinnerPositiveDiagonal,
