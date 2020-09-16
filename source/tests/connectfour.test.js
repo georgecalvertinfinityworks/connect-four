@@ -1,19 +1,49 @@
-const $ = require('jquery')
+const $ = require('jquery');
+const {
+  createBoard,
+  placeCounter,
+  resetGame,
+  checkWinnerHorizontal,
+  checkWinnerVertical,
+  checkWinnerPositiveDiagonal,
+  checkWinnerNegativeDiagonal,
+  checkWinner,
+  saveGameState,
+} = require('../server/logicfunctions.js');
 
-const { drawGrid, createBoard,  checkWinner, placeCounter, resetGame, updateDisplay } = require('./connectfour');
-const each = require("jest-each").default;
+const each = require('jest-each').default;
 
 test('create board creates the correct board', () => {
-  board = [];
-  numberOfColumns = 4;
-  numberOfRows = 3;
-  expectedOutput = [
-    [null, null, null, null],
-    [null, null, null, null],
-    [null, null, null, null],
-  ];
+  let numberOfRows = 3
+  let numberOfColumns = 4 
+  const gameState = {
+    gameWon: false,
+    player1wins: 0,
+    player2wins: 0,
+    player1name: '',
+    player2name: '',
+    player: 'red',
+    numberOfTurns: 0,
+    winner: null,
+    board: [],
+  };
+  expectedOutput = {
+    gameWon: false,
+    player1wins: 0,
+    player2wins: 0,
+    player1name: '',
+    player2name: '',
+    player: 'red',
+    numberOfTurns: 0,
+    winner: null,
+    board: [
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+    ]
+  };
 
-  actualOutput = createBoard(numberOfRows, numberOfColumns, board);
+  actualOutput = createBoard(numberOfRows, numberOfColumns, gameState);
 
   expect(actualOutput).toStrictEqual(expectedOutput);
 });

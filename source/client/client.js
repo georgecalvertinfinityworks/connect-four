@@ -17,11 +17,9 @@ function render(gameState) {
       // place column in row
       $(row).append(column);
       if (gameState.board[i][j] !== null) {
-        console.log(gameState.board[i][j]);
         $(`#circle-row-${i}-column-${j}`).css('background-color', gameState.board[i][j]);
       }
-      $(column).click(() => $(() => {
-        const clickedColumn = j;
+      $(column).click(() => {
         const body = {
           j,
         };
@@ -34,7 +32,7 @@ function render(gameState) {
             render(result.result);
           },
         });
-      }));
+      });
     }
     $('#winner-count1').text(gameState.player1wins);
     $('#winner-count2').text(gameState.player2wins);
@@ -47,14 +45,13 @@ function render(gameState) {
       $('#player-name').text(`${gameState.player} it's your turn`);
       $('#whos-turn').css('display', 'block');
       if (gameState.player === 'yellow') {
-        $('#player-name').text("🟡Yellow it's your turn!🟡");
+        $('#player-name').text("🟡" + gameState.player2name + " it's your turn!🟡");
       } else {
-        $('#player-name').text("🔴Red it's your turn!🔴");
+        $('#player-name').text("🔴" + gameState.player1name + " it's your turn!🔴");
       }
     }
   }
 }
-
 
 $(() => {
   $('#create-board').click(() => {
@@ -75,6 +72,45 @@ $(() => {
     });
   });
 });
+
+
+$(() => {
+  const player1name = prompt("Welcome to connect four! Enter your unique user name player 1", "Player1")
+  const body = {
+    player1name,
+  };
+  $.ajax({
+    type: 'PUT',
+    url: '/game/player1name',
+    data: JSON.stringify(body),
+    contentType: 'application/json',
+  });
+});
+
+$(() => {
+  const player2name = prompt("Welcome to connect four! Enter your unique username player 2", "Player2")
+  const body = {
+    player2name,
+  };
+  $.ajax({
+    type: 'PUT',
+    url: '/game/player2name',
+    data: JSON.stringify(body),
+    contentType: 'application/json',
+  });
+});
+
+/*$(() => {
+  $.ajax({
+    type: 'GET',
+    url: '/game/find',
+    contentType: 'application/json',
+    success: (result) => {
+      render(result.result)
+    }
+  })
+})*/
+
 
 $(() => {
   $('#reset-button').click(() => {
