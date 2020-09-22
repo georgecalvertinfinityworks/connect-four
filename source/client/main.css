@@ -28,7 +28,6 @@
     margin: 0rem auto;
     display: flex;
     justify-content: center;
-    flex-wrap: nowrap;
 }
 
 body {
@@ -73,5 +72,4 @@ body {
 
 #whos-turn {
     display: none;
-    color: black;
 }

@@ -9,9 +9,10 @@ const {
   checkWinnerNegativeDiagonal,
   checkWinner,
   saveGameState,
+  gameStateExists,
 } = require('./logicfunctions.js');
 
-const gameState = {
+let gameState = {
   gameWon: false,
   player1wins: 0,
   player2wins: 0,
@@ -55,9 +56,11 @@ app.put('/game/player1name', (req, res) => {
   });
 });
 
-app.put('/game/player2name', (req, res) => {
+app.put('/game/player2name', async (req, res) => {
+  gameState.player2name = req.body.player2name
+  gameState = await gameStateExists(gameState)
   res.json({
-    result: gameState.player2name = req.body.player2name,
+    result: gameState,
   });
 });
 
@@ -67,4 +70,15 @@ app.get('/game/find', (req, res) => {
   });
 });
 
-app.listen(8080);
+
+if (process.env.NODE_ENV !== "test") {
+  app.listen(8080, () => {
+      console.log('server started on port 8080');
+  });
+}
+
+
+module.exports = {
+  gameState,
+  app
+};

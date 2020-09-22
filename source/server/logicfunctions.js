@@ -1,3 +1,5 @@
+const { gameState } = require('./server');
+
 const fs = require('fs').promises;
 
 function createBoard(numberOfRows, numberOfColumns, gameState) {
@@ -14,6 +16,7 @@ function createBoard(numberOfRows, numberOfColumns, gameState) {
 }
 
 function placeCounter(column, gameState) {
+  console.log(column, gameState);
   if (gameState.gameWon) {
     console.log('illegal move');
     return gameState;
@@ -107,7 +110,6 @@ function checkWinnerNegativeDiagonal(rowIndex, columnIndex, board) {
   return arrayIncludesWin(checkDiagonal);
 }
 
-
 function checkWinner(i, j, gameState) {
   const winners = [];
   winners.push(checkWinnerHorizontal(i, j, gameState.board));
@@ -128,8 +130,29 @@ function checkWinner(i, j, gameState) {
   }
 }
 
-function saveGameState(gameState) {
-  fs.writeFile('/Users/george/gamestates.json', JSON.stringify(gameState), 'utf-8');
+async function saveGameState(gameState) {
+  await fs.writeFile('/Users/george/gamestates.json', JSON.stringify(gameState), 'utf-8');
+}
+
+async function gameStateExists(gameState) {
+  try {
+    const data = await fs.readFile('/Users/george/gamestates.json', 'utf-8');
+    savedGameState = JSON.parse(data);
+    console.log(savedGameState.player1name, savedGameState.player2name);
+    console.log(gameState.player1name, gameState.player2name);
+    if (gameState.player1name === savedGameState.player1name && gameState.player2name === savedGameState.player2name) {
+      gameState = savedGameState;
+    } else {
+      gameState.player1wins = 0;
+      gameState.player2wins = 0;
+      gameState.player = 'red';
+      gameState.numberOfTurns = 0;
+      gameState.winner = null;
+      gameState.board = [];
+    }
+  } finally {
+    return gameState;
+  }
 }
 
 if (typeof module !== 'undefined') {
@@ -144,5 +167,6 @@ if (typeof module !== 'undefined') {
     checkWinnerNegativeDiagonal,
     checkWinner,
     saveGameState,
+    gameStateExists,
   };
 }

@@ -1,4 +1,5 @@
 function render(gameState) {
+  console.log(gameState)
   $('#grid').empty();
   for (let i = 0; i < gameState.board.length; i++) {
     const row = $('<div />')
@@ -97,6 +98,9 @@ $(() => {
     url: '/game/player2name',
     data: JSON.stringify(body),
     contentType: 'application/json',
+    success: (result) => {
+      render(result.result);
+    },
   });
 });
 

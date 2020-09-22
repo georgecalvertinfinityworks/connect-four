@@ -28,6 +28,7 @@
     margin: 0rem auto;
     display: flex;
     justify-content: center;
+    flex-wrap: nowrap;
 }
 
 body {
@@ -68,4 +69,9 @@ body {
     display: none;
     background-color: green;
     color: white;
+}
+
+#whos-turn {
+    display: none;
+    color: black;
 }
