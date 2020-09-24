@@ -92,18 +92,26 @@ test('reset Game functions resets the game when a game is won', () => {
   expect(actualOutput.gameWon).toBe(false);
 });
 
-test('Horizontal Win Works', () => {
-  // Arrange
-  gameState.board = [
+describe('Horizontal Win works', () => {
+  let board1 = [
     [null, null, null, null],
     ['yellow', null, 'yellow', 'yellow'],
     ['red', 'red', 'red', 'red'],
   ];
-  // Act
-  const actualOutput = checkWinnerHorizontal(2, 1, gameState.board);
-  const expectedOutput = 'red';
-  // Assert
-  expect(actualOutput).toBe(expectedOutput);
+  let board2 = [
+    [null, null, null, null, null],
+    ['yellow', null, 'yellow', 'yellow', null],
+    ['red', null, 'red', 'red', 'red'],
+  ];
+  each([
+    [2, 1, board1, 'red'],
+    [2, 4, board2, null],
+  ]).it('Should returm the appropriate winner', (placedCounterRow, PlacedCounterColumn, passedBoard, expected) => {
+    expect(
+      checkWinnerHorizontal(placedCounterRow, PlacedCounterColumn, passedBoard),
+    )
+      .toBe(expected);
+  });
 });
 
 test('Vertical Win Works', () => {
@@ -121,19 +129,29 @@ test('Vertical Win Works', () => {
   expect(actualOutput).toBe(expectedOutput);
 });
 
-test('check winner positive diagonal works', () => {
-  // Arrange
-  gameState.board = [
+describe('Positive Diagonal Win works', () => {
+  board1 = [
     ['yellow', null, null, 'red'],
     ['yellow', null, 'red', 'red'],
     ['yellow', 'red', 'yellow', 'red'],
     ['red', 'yellow', 'red', 'yellow'],
   ];
-  // Act
-  const actualOutput = checkWinnerPositiveDiagonal(0, 3, gameState.board);
-  expectedOutput = 'red';
-  // Assert
-  expect(actualOutput).toBe(expectedOutput);
+  board2 = [
+    ['yellow', null, null, 'red', 'red'],
+    ['red', null, null, 'red', 'yellow'],
+    ['yellow', null, 'red', 'red', 'yellow'],
+    ['yellow', null, 'yellow', 'red', 'red'],
+    ['red', 'yellow', 'red', 'yellow', 'yellow'],
+  ];
+  each([
+    [0, 3, board1, 'red'],
+    [0, 4, board2, null],
+  ]).it('Should returm the appropriate winner', (placedCounterRow, PlacedCounterColumn, passedBoard, expected) => {
+    expect(
+      checkWinnerPositiveDiagonal(placedCounterRow, PlacedCounterColumn, passedBoard),
+    )
+      .toBe(expected);
+  });
 });
 
 test('check winner negative diagonal works counter placed in middle', () => {
@@ -153,7 +171,7 @@ test('check winner negative diagonal works counter placed in middle', () => {
 
 test('check array contains win', () => {
   // Arrange
-  const testArray = 'redredredred';
+  const testArray = 'red,red,red,red';
   // Act
   expectedOutput = 'red';
   actualOutput = arrayIncludesWin(testArray);

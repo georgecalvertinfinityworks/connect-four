@@ -29,7 +29,7 @@ const express = require('express');
 const app = express();
 
 // use all from client
-app.use(express.static('./client'));
+app.use(express.static('./source/client'));
 app.use(express.json());
 
 app.post('/board/create', (req, res) => {
