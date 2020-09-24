@@ -143,6 +143,7 @@ async function gameStateExists(gameState) {
     if (gameState.player1name === savedGameState.player1name && gameState.player2name === savedGameState.player2name) {
       gameState = savedGameState;
     } else {
+      gameState.gameState = false
       gameState.player1wins = 0;
       gameState.player2wins = 0;
       gameState.player = 'red';

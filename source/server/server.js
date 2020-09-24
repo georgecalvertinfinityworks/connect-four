@@ -72,8 +72,8 @@ app.get('/game/find', (req, res) => {
 
 
 if (process.env.NODE_ENV !== "test") {
-  app.listen(8080, () => {
-      console.log('server started on port 8080');
+  app.listen(3006, () => {
+      console.log('server started on port 3006');
   });
 }
 

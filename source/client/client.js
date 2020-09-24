@@ -104,18 +104,6 @@ $(() => {
   });
 });
 
-/*$(() => {
-  $.ajax({
-    type: 'GET',
-    url: '/game/find',
-    contentType: 'application/json',
-    success: (result) => {
-      render(result.result)
-    }
-  })
-})*/
-
-
 $(() => {
   $('#reset-button').click(() => {
     $.ajax({
