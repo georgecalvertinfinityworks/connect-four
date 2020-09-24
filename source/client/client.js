@@ -1,5 +1,4 @@
 function render(gameState) {
-  console.log(gameState)
   $('#grid').empty();
   for (let i = 0; i < gameState.board.length; i++) {
     const row = $('<div />')
@@ -39,16 +38,18 @@ function render(gameState) {
     $('#winner-count2').text(gameState.player2wins);
     if (gameState.gameWon === true) {
       $('#winner-name').text(gameState.winner);
+      $('#celebration').css('display', 'block');
       $('#winner-display').css('display', 'block');
       $('#whos-turn').css('display', 'none');
     } else {
+      $('#celebration').css('display', 'none');
       $('#winner-display').css('display', 'none');
       $('#player-name').text(`${gameState.player} it's your turn`);
       $('#whos-turn').css('display', 'block');
       if (gameState.player === 'yellow') {
-        $('#player-name').text("🟡" + gameState.player2name + " it's your turn!🟡");
+        $('#player-name').text(`🟡${gameState.player2name} it's your turn!🟡`);
       } else {
-        $('#player-name').text("🔴" + gameState.player1name + " it's your turn!🔴");
+        $('#player-name').text(`🔴${gameState.player1name} it's your turn!🔴`);
       }
     }
   }
@@ -74,9 +75,8 @@ $(() => {
   });
 });
 
-
 $(() => {
-  const player1name = prompt("Welcome to connect four! Enter your unique user name player 1", "Player1")
+  const player1name = prompt('Welcome to connect four! Enter your unique user name player 1', 'Player1');
   const body = {
     player1name,
   };
@@ -89,7 +89,7 @@ $(() => {
 });
 
 $(() => {
-  const player2name = prompt("Welcome to connect four! Enter your unique username player 2", "Player2")
+  const player2name = prompt('Welcome to connect four! Enter your unique username player 2', 'Player2');
   const body = {
     player2name,
   };

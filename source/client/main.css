@@ -66,8 +66,16 @@ body {
 
 #winner-display {
     display: none;
-    background-color: green;
     color: white;
+    font-size: large;
+    background-color: mediumaquamarine;
+}
+
+
+
+#celebration {
+    display: none;
+    font-size: xx-large;
 }
 
 #whos-turn {
