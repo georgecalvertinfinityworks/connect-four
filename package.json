@@ -1,0 +1,36 @@
+{
+  "name": "connect-four",
+  "version": "1.0.0",
+  "main": "connectfour.js",
+  "scripts": {
+    "test": "jest --collectCoverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgecalvertinfinityworks/connect-four.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgecalvertinfinityworks/connect-four/issues"
+  },
+  "homepage": "https://github.com/georgecalvertinfinityworks/connect-four#readme",
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "express": "^4.17.1",
+    "jest": "^26.4.2",
+    "jquery": "^3.5.1"
+  },
+  "jest": {
+    "setupFiles": [
+      "./source/setup-jest.js"
+    ]
+  },
+  "description": ""
+}
