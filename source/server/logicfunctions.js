@@ -52,22 +52,22 @@ function resetGame(gameState) {
 }
 
 function arrayIncludesWin(array) {
-  if (array.includes('redredredred')) {
+  if (array.includes('red,red,red,red')) {
     return 'red';
   }
-  if (array.includes('yellowyellowyellowyellow')) {
+  if (array.includes('yellow,yellow,yellow,yellow')) {
     return 'yellow';
   }
   return null;
 }
 
 function checkWinnerHorizontal(row, column, board) {
-  const checkRow = board[row].join('');
+  const checkRow = board[row].join(',');
   return arrayIncludesWin(checkRow);
 }
 
 function checkWinnerVertical(rowIndex, columnIndex, board) {
-  const checkColumn = board.map((row) => row[columnIndex]).join('');
+  const checkColumn = board.map((row) => row[columnIndex]).join(',');
   return arrayIncludesWin(checkColumn);
 }
 
@@ -87,7 +87,7 @@ function checkWinnerPositiveDiagonal(rowIndex, columnIndex, board) {
   for (let i = 0; i <= distance; i++) {
     checkDiagonal.push(board[bottomLeftIndex[0] - i][bottomLeftIndex[1] + i]);
   }
-  checkDiagonal = checkDiagonal.join('');
+  checkDiagonal = checkDiagonal.join(',');
   return arrayIncludesWin(checkDiagonal);
 }
 function checkWinnerNegativeDiagonal(rowIndex, columnIndex, board) {
@@ -106,7 +106,7 @@ function checkWinnerNegativeDiagonal(rowIndex, columnIndex, board) {
   for (let i = 0; i <= distance; i++) {
     checkDiagonal.push(board[bottomRightIndex[0] - i][bottomRightIndex[1] - i]);
   }
-  checkDiagonal = checkDiagonal.join('');
+  checkDiagonal = checkDiagonal.join(',');
   return arrayIncludesWin(checkDiagonal);
 }
 
@@ -131,12 +131,12 @@ function checkWinner(i, j, gameState) {
 }
 
 async function saveGameState(gameState) {
-  await fs.writeFile('/Users/george/gamestates.json', JSON.stringify(gameState), 'utf-8');
+  await fs.writeFile('./data/gamestates.json', JSON.stringify(gameState), 'utf-8');
 }
 
 async function gameStateExists(gameState) {
   try {
-    const data = await fs.readFile('/Users/george/gamestates.json', 'utf-8');
+    const data = await fs.readFile('./data/gamestates.json', 'utf-8');
     savedGameState = JSON.parse(data);
     console.log(savedGameState.player1name, savedGameState.player2name);
     console.log(gameState.player1name, gameState.player2name);
